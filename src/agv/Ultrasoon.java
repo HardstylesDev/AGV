@@ -1,4 +1,4 @@
-package agv.utils;
+package agv;
 
 import com.pi4j.io.gpio.RaspiPin;
 //public class UltrasonicSensor

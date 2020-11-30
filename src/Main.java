@@ -1,9 +1,10 @@
-import agv.utils.Motor;
+import agv.Component;
+import agv.ComponentManager;
+import agv.Motor.Detectie;
+import agv.Motor.Motor;
+import agv.Servo;
 import com.pi4j.io.gpio.*;
-import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.SoftPwm;
-
-import javax.sound.midi.Soundbank;
 
 public class Main {
 
@@ -26,7 +27,7 @@ public class Main {
 
 
     private static final int PIN_NUMBER = 27;
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws Exception {
         System.out.println(System.getProperty("system.os"));
         System.out.println("Started");
         // initialize wiringPi library, this is needed for PWM
@@ -39,8 +40,15 @@ public class Main {
     //setSpeed(100);
     //setSpeed(0);
     //System.out.println("Finished");
-        new Motor().runMotor();
+       // new Motor().runMotor();
+        //Servo.meet();
+      //  ComponentManager componentManager = new ComponentManager();
+        //System.out.println(componentManager.getEnabledModules());
+        new Servo().setEnabled(true);
+        new Detectie().setEnabled(true);
+        new Motor().setEnabled(true);
      //   mains();
+
     }
     private static void setSpeed(int speed) throws InterruptedException {
         System.out.println("Speed is set to " + speed + "%");

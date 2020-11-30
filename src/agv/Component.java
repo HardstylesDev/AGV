@@ -1,4 +1,4 @@
-package agv.utils;
+package agv;
 
 public class Component {
 
