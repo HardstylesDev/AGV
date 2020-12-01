@@ -1,102 +1,45 @@
 import agv.Component;
-import agv.ComponentManager;
-import agv.Motor.Detectie;
+import agv.Motor.TrackingSensor;
 import agv.Motor.Motor;
-import agv.Servo;
-import com.pi4j.io.gpio.*;
-import com.pi4j.wiringpi.SoftPwm;
+import agv.Outputs.Outputs;
+import agv.Ultrasoon;
+import agv.stoplicht.Stoplicht;
+import agv.test.Servo;
+
+import javax.sound.midi.Track;
+import java.lang.reflect.Constructor;
 
 public class Main {
 
-   //public static void main(String[] args) {
-   //    System.out.println("jokers");
-
-   //    GpioController gpio = GpioFactory.getInstance();
-
-   //    GpioPinDigitalOutput pinA = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_27);
-   //    int test = 0;
-   //    while (true) {
-   //        test++;
-
-   //        pinA.high();
-   //       // if(test > 10000000){
-   //       //     System.out.println("break");
-   //       //     break;
-   //        }
-   //    }
-
-
-    private static final int PIN_NUMBER = 27;
     public static void main(String[] args) throws Exception {
-        System.out.println(System.getProperty("system.os"));
-        System.out.println("Started");
-        // initialize wiringPi library, this is needed for PWM
-    //Gpio.wiringPiSetup();
-    //// softPwmCreate(int pin, int value, int range)
-    //// the range is set like (min=0 ; max=100)
-    //SoftPwm.softPwmCreate(PIN_NUMBER, 0, 100);
-    //setSpeed(25);
-    //setSpeed(50);
-    //setSpeed(100);
-    //setSpeed(0);
-    //System.out.println("Finished");
-       // new Motor().runMotor();
-        //Servo.meet();
-      //  ComponentManager componentManager = new ComponentManager();
-        //System.out.println(componentManager.getEnabledModules());
-        new Servo().setEnabled(true);
-        new Detectie().setEnabled(true);
-        new Motor().setEnabled(true);
-     //   mains();
+        System.out.println(Outputs.TRACKING_SENSOR_3);
+        Class<? extends Component>[] COMPONENTS = new Class[]{Motor.class, TrackingSensor.class, Ultrasoon.class, Stoplicht.class, Servo.class};
 
-    }
-    private static void setSpeed(int speed) throws InterruptedException {
-        System.out.println("Speed is set to " + speed + "%");
-        // softPwmWrite(int pin, int value)
-        // This updates the PWM value on the given pin. The value is checked to
-        // be in-range and pins that haven't previously been initialized via
-        // softPwmCreate will be silently ignored.
-        SoftPwm.softPwmWrite(PIN_NUMBER, speed);
-        // wait 3 seconds
-        Thread.sleep(3000);
-    }
+        for (Class<? extends Component> component : COMPONENTS) {
+            Class<? extends Component> clazz = component;
+            Constructor<? extends Component> constructor = clazz.getConstructor();
+            Component componentInstance = constructor.newInstance();
 
-    //GPIO Pins
-    private static GpioPinDigitalOutput sensorTriggerPin ;
-    private static GpioPinDigitalInput sensorEchoPin ;
-
-
-    final static GpioController gpio = GpioFactory.getInstance();
-
-    public static void mains()
-    {
-        sensorTriggerPin =  gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03); // Trigger pin as OUTPUT
-        sensorEchoPin = gpio.provisionDigitalInputPin(RaspiPin.GPIO_02,PinPullResistance.PULL_DOWN); // Echo pin as INPUT
-
-        while(true){
-            try {
-                Thread.sleep(2000);
-                sensorTriggerPin.high(); // Make trigger pin HIGH
-                Thread.sleep((long) 0.01);// Delay for 10 microseconds
-                sensorTriggerPin.low(); //Make trigger pin LOW
-
-                while(sensorEchoPin.isLow()){ //Wait until the ECHO pin gets HIGH
-
-                }
-                long startTime= System.nanoTime(); // Store the surrent time to calculate ECHO pin HIGH time.
-                while(sensorEchoPin.isHigh()){ //Wait until the ECHO pin gets LOW
-
-                }
-                long endTime= System.nanoTime(); // Store the echo pin HIGH end time to calculate ECHO pin HIGH time.
-
-                System.out.println("Distance :"+((((endTime-startTime)/1e3)/2) / 29.1) +" cm"); //Printing out the distance in cm
-                Thread.sleep(1000);
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+           //if (!(componentInstance instanceof TrackingSensor)) {
+           componentInstance.setEnabled(true);
+           componentInstance.setDebugOutput(false);
+           //}
+            if (componentInstance instanceof TrackingSensor || componentInstance instanceof Motor)
+                componentInstance.setDebugOutput(true);
         }
+
+
     }
 }
 
 
+//  private static void setSpeed(int speed) throws InterruptedException {
+//      System.out.println("Speed is set to " + speed + "%");
+//      // softPwmWrite(int pin, int value)
+//      // This updates the PWM value on the given pin. The value is checked to
+//      // be in-range and pins that haven't previously been initialized via
+//      // softPwmCreate will be silently ignored.
+//      SoftPwm.softPwmWrite(PIN_NUMBER, speed);
+//      // wait 3 seconds
+//      Thread.sleep(3000);
+//  }

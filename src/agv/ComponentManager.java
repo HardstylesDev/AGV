@@ -1,12 +1,12 @@
 package agv;
 
-import agv.Motor.Detectie;
+import agv.Motor.TrackingSensor;
 import agv.Motor.Motor;
 
 import java.util.*;
 
 public class ComponentManager {
-    public static final Class<? extends Component>[] COMPONENTS = new Class[]{Motor.class, Detectie.class};
+    public static final Class<? extends Component>[] COMPONENTS = new Class[]{Motor.class, TrackingSensor.class};
     private final ArrayList<Component> components = new ArrayList<>();
     private final List<Class<? extends Component>> enabledComponents = new ArrayList<Class<? extends Component>>();
 

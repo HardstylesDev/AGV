@@ -4,6 +4,7 @@ public class Component {
 
     private final String name;
     private boolean enabled;
+    private boolean showdebug;
 
     public Component(String name) {
         this.name = name;
@@ -28,6 +29,17 @@ public class Component {
     }
 
     public void onEnable() {
+    }
+    public void setDebugOutput(boolean b){
+        this.showdebug = b;
+    }
+    public void debug(String debug) {
+        if (showingDebug())
+            System.out.println("[DEBUG] [" + this.getName() + "]: " + debug);
+    }
+
+    public boolean showingDebug() {
+        return this.showdebug;
     }
 
     public void onDisable() {

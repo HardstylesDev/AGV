@@ -1,10 +1,11 @@
 package agv.Motor;
 
 import agv.Component;
-import agv.Pins;
+import agv.Outputs.Outputs;
 import agv.utils.Multithread;
-import com.pi4j.io.gpio.*;
 import com.pi4j.wiringpi.SoftPwm;
+
+import javax.sound.midi.Track;
 
 public class Motor extends Component {
     public Motor() {
@@ -13,14 +14,9 @@ public class Motor extends Component {
 
     @Override
     public void onDisable() {
-        System.out.println("Motor disabled");
+        this.debug("Motor disabled");
     }
 
-    private final GpioController gpio = GpioFactory.getInstance();
-    private final GpioPinDigitalOutput vooruit_rechts = gpio.provisionDigitalOutputPin(Pins.VOORUIT_RECHTS);
-    private final GpioPinDigitalOutput vooruit_links = gpio.provisionDigitalOutputPin(Pins.VOORUIT_LINKS);
-    private final GpioPinDigitalOutput achteruit_rechts = gpio.provisionDigitalOutputPin(Pins.ACHTERUIT_RECHTS);
-    private final GpioPinDigitalOutput achteruit_links = gpio.provisionDigitalOutputPin(Pins.ACHTERUIT_LINKS);
 
     @Override
     public void onEnable() {
@@ -28,75 +24,93 @@ public class Motor extends Component {
     }
 
     public void start() {
+        //try {
+        //    setSpeed(10);
+        //} catch (InterruptedException e) {
+        //    e.printStackTrace();
+        //}
         if (!this.isEnabled())
             return;
-        System.out.println("entered!");
-        try {
-            //this.setSpeed(50);
-            for (int i = 0; i < 5; ++i) {
-                forwards();
-                System.out.println("should run...");
-                Thread.sleep(250);
-                backwards();
-                Thread.sleep(250);
-
-            }
-            disableMotors();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        debug("start() called");
+        //try {
+        //    forwards();
+        //    Thread.sleep(3000);
+        //    new TrackingSensor().setEnabled(false);
+        //    this.disableMotors();
+        //} catch (Exception e) {
+        //}
     }
-
-
-
 
 
     private void disableMotors() {
-        this.vooruit_links.low();
-        this.vooruit_rechts.low();
-        this.achteruit_links.low();
-        this.achteruit_rechts.low();
+        debug("disableMotors() called");
+
+        Outputs.MOTOR_ACHTERUIT_LINKS.low();
+        Outputs.MOTOR_ACHTERUIT_RECHTS.low();
+        Outputs.MOTOR_VOORUIT_LINKS.low();
+        Outputs.MOTOR_VOORUIT_RECHTS.low();
+
     }
 
     private void forwards() {
+        debug("forwards() called");
+        //  if(!this.isEnabled())
+        //      return;
         this.disableMotors();
-        this.vooruit_rechts.high();
-        this.vooruit_links.high();
+        Outputs.MOTOR_VOORUIT_RECHTS.high();
+        Outputs.MOTOR_VOORUIT_LINKS.high();
     }
 
     private void backwards() {
+        // if(!this.isEnabled())
+        //     return;
         this.disableMotors();
-        this.achteruit_rechts.high();
-        this.achteruit_links.high();
+        Outputs.MOTOR_ACHTERUIT_RECHTS.high();
+        Outputs.MOTOR_ACHTERUIT_LINKS.high();
+
     }
 
-    public void steer(int richting){
-        if(richting == 3)
+    public void steer(int richting) {
+        System.out.println("steer() called with value: " + richting);
+        //if(!this.isEnabled())
+        //    return;
+        if (richting == 3) {
             forwards();
-        else if(richting >= 4)
+            debug("forward");
+        } else if (richting >= 4) {
             steerRight();
-        else if(richting <= 2)
+            debug("right");
+        } else if (richting <= 2) {
             steerLeft();
+            debug("left");
+        }
     }
-    private void steerRight(){
+
+    private void steerRight() {
+        //  if(!this.isEnabled())
+        //      return;
         this.disableMotors();
-        this.vooruit_links.high();
+        Outputs.MOTOR_VOORUIT_LINKS.high();
     }
-    private void steerLeft(){
+
+    private void steerLeft() {
+        //  if(!this.isEnabled())
+        //      return;
         this.disableMotors();
-        this.vooruit_rechts.high();
+        Outputs.MOTOR_VOORUIT_RECHTS.high();
+
     }
 
     private void setSpeed(int procent) throws InterruptedException {
 
-        SoftPwm.softPwmCreate(this.achteruit_links.getPin().getAddress(), 0, 100);
-        SoftPwm.softPwmCreate(this.achteruit_rechts.getPin().getAddress(), 0, 100);
-        SoftPwm.softPwmCreate(this.vooruit_links.getPin().getAddress(), 0, 100);
-        SoftPwm.softPwmCreate(this.vooruit_rechts.getPin().getAddress(), 0, 100);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_ACHTERUIT_RECHTS.getPin().getAddress(), 0, 100);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_ACHTERUIT_LINKS.getPin().getAddress(), 0, 100);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), 0, 100);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), 0, 100);
 
-        SoftPwm.softPwmWrite(this.achteruit_links.getPin().getAddress(), procent);
-        SoftPwm.softPwmWrite(this.achteruit_rechts.getPin().getAddress(), procent);
-        SoftPwm.softPwmWrite(this.vooruit_links.getPin().getAddress(), procent);
-        SoftPwm.softPwmWrite(this.vooruit_rechts.getPin().getAddress(), procent);
+        SoftPwm.softPwmWrite(Outputs.MOTOR_ACHTERUIT_LINKS.getPin().getAddress(), procent);
+        SoftPwm.softPwmWrite(Outputs.MOTOR_ACHTERUIT_RECHTS.getPin().getAddress(), procent);
+        SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), procent);
+        SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), procent);
     }
 }

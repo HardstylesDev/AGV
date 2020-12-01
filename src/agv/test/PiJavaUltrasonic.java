@@ -30,7 +30,7 @@ public class PiJavaUltrasonic {
         pin_trig = gpio.provisionDigitalOutputPin(RaspiPin.getPinByAddress(PIN_TRIG), "pin_trig", PinState.HIGH);//pin,tag,initial-state
         pin_trig.setShutdownOptions(true, PinState.LOW);
 
-        pin_echo = gpio.provisionDigitalInputPin(RaspiPin.getPinByAddress(PIN_ECHO), PinPullResistance.PULL_DOWN);//pin,tag,initial-state
+        pin_echo = gpio.provisionDigitalInputPin(RaspiPin.getPinByAddress(PIN_ECHO));//pin,tag,initial-state
 
     }
 
@@ -70,6 +70,7 @@ public class PiJavaUltrasonic {
     public static void busyWaitMicros(long micros) {
         long waitUntil = System.nanoTime() + (micros * 1_000);
         while (waitUntil > System.nanoTime()) {
+            // crashed als je alles hebt
             ;
         }
     }
