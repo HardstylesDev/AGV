@@ -1,0 +1,32 @@
+<component name="libraryTable">
+  <library name="zxing">
+    <ANNOTATIONS>
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxing.zip!/" />
+    </ANNOTATIONS>
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxing.zip!/" />
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxingbundle/zxing-1.0.12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxingbundle/text-ui-0.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxingbundle/slf4j-api-1.7.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxingbundle/jcommander-1.72.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxingbundle/javase-3.3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxingbundle/jai-imageio-core-1.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxingbundle/core-3.3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxingbundle/commons-lang3-3.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxingbundle/commons-io-2.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxingbundle/commons-collections4-4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxingbundle/banner-1.0.2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxing.zip!/" />
+    </JAVADOC>
+    <NATIVE>
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxing.zip!/" />
+    </NATIVE>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxing.zip!/" />
+    </SOURCES>
+    <jarDirectory url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxing.zip!/" recursive="false" />
+    <jarDirectory url="jar://$PROJECT_DIR$/../../gebruiker/Downloads/zxing.zip!/" recursive="false" type="SOURCES" />
+  </library>
+</component>

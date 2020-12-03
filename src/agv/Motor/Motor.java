@@ -1,16 +1,17 @@
 package agv.Motor;
 
 import agv.Component;
-import agv.Outputs.Outputs;
+import agv.pins.Outputs;
 import agv.utils.Multithread;
 import com.pi4j.wiringpi.SoftPwm;
-
-import javax.sound.midi.Track;
 
 public class Motor extends Component {
     public Motor() {
         super("Motoren");
     }
+
+    int speed = 25;
+    int turnspeed = 60;
 
     @Override
     public void onDisable() {
@@ -24,54 +25,83 @@ public class Motor extends Component {
     }
 
     public void start() {
-        //try {
-        //    setSpeed(10);
-        //} catch (InterruptedException e) {
-        //    e.printStackTrace();
-        //}
+
         if (!this.isEnabled())
             return;
+        SoftPwm.softPwmCreate(Outputs.MOTOR_ACHTERUIT_LINKS.getPin().getAddress(), 0, 100);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), 0,100);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), 0,100);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_ACHTERUIT_RECHTS.getPin().getAddress(), 0,100);
+
+        Outputs.MOTOR_VOORUIT_RECHTS.high();
+        Outputs.MOTOR_VOORUIT_LINKS.high();
+        Outputs.MOTOR_ACHTERUIT_LINKS.high();
+        Outputs.MOTOR_ACHTERUIT_RECHTS.high();
+
         debug("start() called");
-        //try {
-        //    forwards();
-        //    Thread.sleep(3000);
-        //    new TrackingSensor().setEnabled(false);
-        //    this.disableMotors();
-        //} catch (Exception e) {
-        //}
+        try {
+            // setSpeed(85);
+            // forwards();
+            // Thread.sleep(3000);
+            // new TrackingSensor().setEnabled(false);
+            // this.disableMotors();
+        } catch (Exception e) {
+        }
+
     }
 
+    private int lastSeen = -1;
 
-    private void disableMotors() {
+    private void returnToSafety() {
+
+    }
+
+    public void disableMotors() {
         debug("disableMotors() called");
 
-        Outputs.MOTOR_ACHTERUIT_LINKS.low();
-        Outputs.MOTOR_ACHTERUIT_RECHTS.low();
-        Outputs.MOTOR_VOORUIT_LINKS.low();
-        Outputs.MOTOR_VOORUIT_RECHTS.low();
+        SoftPwm.softPwmWrite(Outputs.MOTOR_ACHTERUIT_LINKS.getPin().getAddress(), 0);
+        SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), 0);
+        SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), 0);
+        SoftPwm.softPwmWrite(Outputs.MOTOR_ACHTERUIT_RECHTS.getPin().getAddress(), 0);
+
+        //  Outputs.MOTOR_ACHTERUIT_LINKS.low();
+        //  Outputs.MOTOR_ACHTERUIT_RECHTS.low();
+        //  Outputs.MOTOR_VOORUIT_LINKS.low();
+        //  Outputs.MOTOR_VOORUIT_RECHTS.low();
 
     }
 
     private void forwards() {
+
         debug("forwards() called");
         //  if(!this.isEnabled())
         //      return;
         this.disableMotors();
-        Outputs.MOTOR_VOORUIT_RECHTS.high();
-        Outputs.MOTOR_VOORUIT_LINKS.high();
+        // Outputs.MOTOR_VOORUIT_RECHTS.high();
+        // Outputs.MOTOR_VOORUIT_LINKS.high();
+
+
+        SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), speed);
+        SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), speed);
+
+
     }
 
     private void backwards() {
         // if(!this.isEnabled())
         //     return;
         this.disableMotors();
-        Outputs.MOTOR_ACHTERUIT_RECHTS.high();
-        Outputs.MOTOR_ACHTERUIT_LINKS.high();
+        //Outputs.MOTOR_ACHTERUIT_RECHTS.high();
+        //Outputs.MOTOR_ACHTERUIT_LINKS.high();
+
+        SoftPwm.softPwmCreate(Outputs.MOTOR_ACHTERUIT_LINKS.getPin().getAddress(), speed, 100);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_ACHTERUIT_RECHTS.getPin().getAddress(), speed, 100);
 
     }
 
     public void steer(int richting) {
-        System.out.println("steer() called with value: " + richting);
+        //this.lastSeen = richting;
+        debug("steer() called with value: " + richting);
         //if(!this.isEnabled())
         //    return;
         if (richting == 3) {
@@ -90,27 +120,36 @@ public class Motor extends Component {
         //  if(!this.isEnabled())
         //      return;
         this.disableMotors();
-        Outputs.MOTOR_VOORUIT_LINKS.high();
+
+
+        SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), turnspeed);
+
+
+        //Outputs.MOTOR_VOORUIT_LINKS.high();
     }
 
     private void steerLeft() {
         //  if(!this.isEnabled())
         //      return;
         this.disableMotors();
-        Outputs.MOTOR_VOORUIT_RECHTS.high();
+        //  Outputs.MOTOR_VOORUIT_RECHTS.high();
+
+        SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), turnspeed);
+
 
     }
 
     private void setSpeed(int procent) throws InterruptedException {
 
-        SoftPwm.softPwmCreate(Outputs.MOTOR_ACHTERUIT_RECHTS.getPin().getAddress(), 0, 100);
-        SoftPwm.softPwmCreate(Outputs.MOTOR_ACHTERUIT_LINKS.getPin().getAddress(), 0, 100);
-        SoftPwm.softPwmCreate(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), 0, 100);
-        SoftPwm.softPwmCreate(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), 0, 100);
 
-        SoftPwm.softPwmWrite(Outputs.MOTOR_ACHTERUIT_LINKS.getPin().getAddress(), procent);
-        SoftPwm.softPwmWrite(Outputs.MOTOR_ACHTERUIT_RECHTS.getPin().getAddress(), procent);
-        SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), procent);
-        SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), procent);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_ACHTERUIT_LINKS.getPin().getAddress(), procent, 100);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), procent, 100);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), procent, 100);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_ACHTERUIT_RECHTS.getPin().getAddress(), procent, 100);
+
+        //  SoftPwm.softPwmWrite(Outputs.MOTOR_ACHTERUIT_LINKS.getPin().getAddress(), procent);
+        //  SoftPwm.softPwmWrite(Outputs.MOTOR_ACHTERUIT_RECHTS.getPin().getAddress(), procent);
+        //  SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), procent);
+        //  SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), procent);
     }
 }

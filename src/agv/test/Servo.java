@@ -1,11 +1,7 @@
 package agv.test;
 
 import agv.Component;
-import agv.Outputs.Outputs;
 import agv.utils.Multithread;
-import com.pi4j.component.servo.ServoDriver;
-import com.pi4j.component.servo.ServoProvider;
-import com.pi4j.component.servo.impl.RPIServoBlasterProvider;
 
 public class Servo extends Component {
     public Servo() {
@@ -24,6 +20,7 @@ public class Servo extends Component {
             System.out.println("its hereeee");
             int pin = 12;
             try {
+
                 System.out.println("true");
                 debug("Try");
                 Runtime runTime = Runtime.getRuntime();
@@ -42,7 +39,9 @@ public class Servo extends Component {
                 boolean turningLeft = true;
                 while (this.isEnabled()) {
                     runTime.exec("gpio pwm " + pin + " " + i);
+                    debug("gpio pwm " + pin + " " + i);
                     Thread.sleep(10);
+                    debug("sleeping 10 ms");
                     if (turningLeft) {
                         i++;
                     } else {

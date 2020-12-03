@@ -1,5 +1,6 @@
-package agv;
+package agv.Motor;
 
+import agv.Component;
 import agv.test.PiJavaUltrasonic;
 import agv.utils.Multithread;
 

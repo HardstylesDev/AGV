@@ -1,4 +1,4 @@
-package agv;
+package agv.pins;
 
 import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.Pin;
