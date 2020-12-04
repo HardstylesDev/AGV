@@ -100,6 +100,11 @@ public class Motor extends Component {
     }
 
     public void steer(int richting) {
+        if(Ultrasoon.getDistance() >= 0 && Ultrasoon.getDistance() <= 100){
+            debug("Disable motors, object detectie.");
+            disableMotors();
+            return;
+        }
         //this.lastSeen = richting;
         debug("steer() called with value: " + richting);
         //if(!this.isEnabled())

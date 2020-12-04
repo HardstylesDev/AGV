@@ -1,5 +1,6 @@
 import agv.Camera;
 import agv.Component;
+import agv.Kleursensor;
 import agv.Motor.TrackingSensor;
 import agv.Motor.Motor;
 import agv.pins.Outputs;
@@ -7,6 +8,7 @@ import agv.Motor.Ultrasoon;
 import agv.status.OrderManager;
 import agv.stoplicht.Stoplicht;
 import agv.test.Servo;
+
 
 import java.lang.reflect.Constructor;
 
@@ -20,6 +22,7 @@ public class Main {
                 TrackingSensor.class,
                 Ultrasoon.class,
                 Stoplicht.class,
+                Kleursensor.class,
                 Servo.class,
                 OrderManager.class//,
               //  Camera.class
@@ -33,9 +36,11 @@ public class Main {
                 componentInstance.setEnabled(true);
                 componentInstance.setDebugOutput(false);
             }
-            if (componentInstance instanceof OrderManager)
+            if (componentInstance instanceof Kleursensor)
                 componentInstance.setDebugOutput(true);
         }
+
+
     }
 }
 

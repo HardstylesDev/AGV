@@ -34,7 +34,7 @@ public class OrderManager extends Component {
                 Orders orders = new Orders();
                 if(orders.isEmpty())
                     orders.setOrder(order.split(","));
-                debug("sleep sleep");
+
                 Thread.sleep(delay);
             } catch (Exception e) {
                 e.printStackTrace();

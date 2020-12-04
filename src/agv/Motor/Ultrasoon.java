@@ -30,11 +30,20 @@ public class Ultrasoon extends Component {
             try {
 
                 this.debug("distance " + sonic.getDistance() + "mm");
+                setCurrentDistance(sonic.getDistance());
                 Thread.sleep(500);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
+    public static double distance = -1;
+
+    public void setCurrentDistance(double i){
+        distance = i;
+    }
+    public static double getDistance(){
+        return distance;
     }
 }
 

@@ -11,5 +11,6 @@
     <orderEntry type="library" name="okhttp" level="project" />
     <orderEntry type="library" name="mysql-connector-java-8.0.21" level="project" />
     <orderEntry type="library" name="zxing" level="project" />
+    <orderEntry type="library" name="jssc-2.9.2" level="project" />
   </component>
 </module>

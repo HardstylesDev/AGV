@@ -24,10 +24,10 @@ public class Orders {
     }
 
     public String getNextPart() {
-        if(this.orders.isEmpty()){
+        if (this.orders.isEmpty()) {
             StatusManager.setStatus(Status.StatusType.TAAK_VOLTOOID, false);
         }
-       String color = this.orders.get(0);
+        String color = this.orders.get(0);
         this.orders.remove(0);
         return color;
 
