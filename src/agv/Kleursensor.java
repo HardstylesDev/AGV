@@ -23,7 +23,8 @@ public class Kleursensor extends Component {
     public void start() {
         if (!this.isEnabled())
             return;
-        GeefKleur();
+        String kleur = GeefKleur();
+        System.out.println(kleur);
         while (this.isEnabled()) {
             try {
 
@@ -32,27 +33,29 @@ public class Kleursensor extends Component {
             }
         }
     }
-//    pipotje dans
-    private void init(){}
+
+    //    pipotje dans
+    private void init() {
+    }
+
     public String waarde;
 
     public String GeefKleur() {
         SerialPort serialPort = new SerialPort("/dev/ttyUSB0");
         try {
-            System.out.println("Port opened: " + serialPort.openPort());
+            serialPort.openPort();
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Kleursensor.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            System.out.println("Params setted: " + serialPort.setParams(9600, 8, 1, 0));
+            serialPort.setParams(9600, 8, 1, 0);
             while (true) {
                 Thread.sleep(1000);
                 waarde = serialPort.readString();
                 if (waarde != null) {
-                    System.out.println(waarde.replaceAll("\t", ""));
-
+                    return waarde.replaceAll("\t", "");
                 }
             }
         } catch (SerialPortException ex) {

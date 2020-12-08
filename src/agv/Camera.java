@@ -19,14 +19,18 @@ import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.QRCodeReader;
 
 
-public class Camera {
+public class Camera extends Component{
+    public Camera(){
+        super("Camera");
+    }
 
-    int count = 1;
     String code;
 
-    private Scanner scanner;
-
-    public void takeSnapAndScanForQRCodes()
+    @Override
+    public void onEnable(){
+        snap();
+    }
+    public void snap()
     {
         Runtime rt = Runtime.getRuntime();
         String dateTime = null;
@@ -37,15 +41,11 @@ public class Camera {
             System.out.println("Started taking the snap: "+i);
             dateTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
             fileName="snap_" + dateTime + ".png";
-            //System.out.println("fileName="+fileName);
-            //The below raspistill command will take photos with the image name as "snap_<dateformat_in_yyyyMMddHHmmss>.jpg" with nopreview
-            Process snap;
+              Process snap;
             try
             {
                 snap = rt.exec("raspistill --timeout 5 --output " + fileName + " --nopreview");
                 snap.waitFor(); // Sync
-                //int code = snap.waitFor(); // Sync
-                //System.out.println("code="+code);
             }
             catch (IOException e1) {
                 // TODO Auto-generated catch block
@@ -79,6 +79,7 @@ public class Camera {
 
                     System.out.println("Scan Decode is successful!!! The decoded QR Code text is:\n");
                     System.out.println(result.getText()+"\n");
+                    System.out.println(imageFile.getPath());
                     code = result.getText();
                     System.out.println("========End of processing the snap "+i+"========");
                 }
@@ -98,13 +99,6 @@ public class Camera {
                     System.out.println("This FormatException is thrown when a QR Code was successfully detected, but some aspect of the content did not conform to the barcode's format rules. This could have been due to a mis-detection.");
                 }
             }
-        }// End of FOR loop
-    }
-
-    public static void main(String args[]){
-
-        Camera brScanner = new Camera();
-        brScanner.takeSnapAndScanForQRCodes();
-
+        }
     }
 }

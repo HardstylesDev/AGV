@@ -15,6 +15,7 @@ import java.lang.reflect.Constructor;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        //new Camera().takeSnapAndScanForQRCodes();
         //Camera.main(new String[]{});
         System.out.println(Outputs.TRACKING_SENSOR_3);
         Class<? extends Component>[] COMPONENTS = new Class[]{
@@ -24,18 +25,18 @@ public class Main {
                 Stoplicht.class,
                 Kleursensor.class,
                 Servo.class,
-                OrderManager.class//,
-              //  Camera.class
+                OrderManager.class,
+                Camera.class
         };
 
         for (Class<? extends Component> component : COMPONENTS) {
             Class<? extends Component> clazz = component;
             Constructor<? extends Component> constructor = clazz.getConstructor();
             Component componentInstance = constructor.newInstance();
-            if (!(componentInstance instanceof Motor)) {
+            //if (!(componentInstance instanceof Motor)) {
                 componentInstance.setEnabled(true);
                 componentInstance.setDebugOutput(false);
-            }
+          //  }
             if (componentInstance instanceof Kleursensor)
                 componentInstance.setDebugOutput(true);
         }

@@ -10,7 +10,7 @@ public class Motor extends Component {
         super("Motoren");
     }
 
-    int speed = 25;
+    int speed = 45;
     int turnspeed = 60;
 
     @Override
@@ -128,25 +128,24 @@ public class Motor extends Component {
 
 
         SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), turnspeed);
+        SoftPwm.softPwmWrite(Outputs.MOTOR_ACHTERUIT_RECHTS.getPin().getAddress(), turnspeed);
 
 
         //Outputs.MOTOR_VOORUIT_LINKS.high();
     }
 
     private void steerLeft() {
-        //  if(!this.isEnabled())
-        //      return;
+          if(!this.isEnabled())
+              return;
         this.disableMotors();
-        //  Outputs.MOTOR_VOORUIT_RECHTS.high();
 
         SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), turnspeed);
+        SoftPwm.softPwmWrite(Outputs.MOTOR_ACHTERUIT_LINKS.getPin().getAddress(), turnspeed);
 
 
     }
 
     private void setSpeed(int procent) throws InterruptedException {
-
-
         SoftPwm.softPwmCreate(Outputs.MOTOR_ACHTERUIT_LINKS.getPin().getAddress(), procent, 100);
         SoftPwm.softPwmCreate(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), procent, 100);
         SoftPwm.softPwmCreate(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), procent, 100);

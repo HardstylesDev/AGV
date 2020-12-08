@@ -1,7 +1,6 @@
 package agv.stoplicht;
 
 import agv.Component;
-import agv.pins.Outputs;
 import agv.utils.Multithread;
 
 import java.io.IOException;
@@ -31,24 +30,16 @@ public class Stoplicht extends Component {
             }
         }
     }
-
-
-    private void reset() {
-
-    }
-
-
-
     private void update() {
 
     }
 
     private void disableAll(){
-        enableLed(15, false);
-        enableLed(11, false);
-        enableLed(10, false);
+        enableLED(15, false);
+        enableLED(11, false);
+        enableLED(10, false);
     }
-    private void enableLed(int i, boolean enable) {
+    private void enableLED(int i, boolean enable) {
         Runtime runTime = Runtime.getRuntime();
         try {
             runTime.exec("gpio write " + i + " " + (enable ? 1 : 0));
@@ -56,14 +47,14 @@ public class Stoplicht extends Component {
             e.printStackTrace();
         }
     }
-    boolean blink = false;
+
     boolean test = true;
     int lamp = 0;
     private void enable(int i, boolean blink){
         disableAll();
         if(blink){
             while(blink && i == lamp){
-                enableLed(i, test);
+                enableLED(i, test);
                 if (test) {
                     test = !test;
                     return;
@@ -76,6 +67,6 @@ public class Stoplicht extends Component {
                 }
             }
         }
-        enableLed(i, true);
+        enableLED(i, true);
     }
 }

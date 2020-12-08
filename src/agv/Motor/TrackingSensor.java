@@ -31,16 +31,21 @@ public class TrackingSensor extends Component {
         }
 
     }
+
     boolean left = false;
     boolean right = false;
     boolean center = false;
+
     public void update() {
-        if (Outputs.TRACKING_SENSOR_1.isLow() && Outputs.TRACKING_SENSOR_2.isLow() && Outputs.TRACKING_SENSOR_3.isLow() && Outputs.TRACKING_SENSOR_4.isLow() && Outputs.TRACKING_SENSOR_5.isLow())
-        {
+        if (Ultrasoon.getDistance() > 0 && Ultrasoon.getDistance() < 100) {
+            debug("Object gedetecteerd, obstakel gevonden.");
+            new Motor().disableMotors();
+            return;
+        }
+        if (Outputs.TRACKING_SENSOR_1.isLow() && Outputs.TRACKING_SENSOR_2.isLow() && Outputs.TRACKING_SENSOR_3.isLow() && Outputs.TRACKING_SENSOR_4.isLow() && Outputs.TRACKING_SENSOR_5.isLow()) {
             lastDetection = System.currentTimeMillis();
             new Motor().steer(3);
-        }
-        else if (Outputs.TRACKING_SENSOR_1.isLow()) {
+        } else if (Outputs.TRACKING_SENSOR_1.isLow()) {
             lastDetection = System.currentTimeMillis();
             lastDirection = 5;
             new Motor().steer(5);
@@ -61,14 +66,16 @@ public class TrackingSensor extends Component {
             lastDirection = 1;
             new Motor().steer(1);
         } else if (Outputs.TRACKING_SENSOR_1.isHigh() && Outputs.TRACKING_SENSOR_2.isHigh() && Outputs.TRACKING_SENSOR_3.isHigh() && Outputs.TRACKING_SENSOR_4.isHigh() && Outputs.TRACKING_SENSOR_5.isHigh())
-            if (System.currentTimeMillis() - lastDetection > 3000){
-                new Motor().disableMotors();
-                StatusManager.setStatus(Status.StatusType.ROUTE_KWIJT, false);
-            }
-            else
+          //  if (System.currentTimeMillis() - lastDetection > 3000) {
+          //      new Motor().disableMotors();
+          //      StatusManager.setStatus(Status.StatusType.ROUTE_KWIJT, true);
+          ////  } else {
                 new Motor().steer(lastDirection);
+                StatusManager.setStatus(Status.StatusType.ROUTE_KWIJT, false);
+           // }
     }
-    private void send(boolean left, boolean center, boolean right){
+
+    private void send(boolean left, boolean center, boolean right) {
 
     }
 

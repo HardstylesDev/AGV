@@ -1,6 +1,9 @@
 package agv.utils;
 
 
+import agv.status.Status;
+import agv.status.StatusManager;
+
 import java.sql.*;
 
 public class Database {
@@ -15,6 +18,8 @@ public class Database {
 
     public void connect() {
         try {
+            StatusManager.setStatus(Status.StatusType.GEEN_DASHBOARD_CONNECTIE, false);
+
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(
                     String.format("jdbc:mysql://%s:3306/%s?useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=CET", host, database),
@@ -23,7 +28,7 @@ public class Database {
             );
             //System.out.println(con.get);
         } catch (Exception e) {
-
+            StatusManager.setStatus(Status.StatusType.GEEN_DASHBOARD_CONNECTIE, true);
             System.out.println("error caught here, fix");
             e.printStackTrace();
             //System.exit(0);
@@ -36,6 +41,7 @@ public class Database {
             return stmt.executeQuery(sql);
         } catch (SQLException e) {
             System.out.println("error caught here, fix 2");
+            StatusManager.setStatus(Status.StatusType.GEEN_DASHBOARD_CONNECTIE, true);
 
             System.out.println(e.getMessage());
             // System.exit(0);
@@ -50,6 +56,7 @@ public class Database {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             System.out.println("error caught here, fix 3");
+            StatusManager.setStatus(Status.StatusType.GEEN_DASHBOARD_CONNECTIE, true);
 
             // System.exit(0);
         }
@@ -62,6 +69,8 @@ public class Database {
             con = null;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            StatusManager.setStatus(Status.StatusType.GEEN_DASHBOARD_CONNECTIE, true);
+
             System.exit(0);
         }
     }

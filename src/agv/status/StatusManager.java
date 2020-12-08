@@ -36,7 +36,7 @@ public class StatusManager extends Component {
 
     private void start() {
         while (this.isEnabled()) {
-            this.debug(Outputs.TRACKING_SENSOR_1.getState() + " - " + Outputs.TRACKING_SENSOR_2.getState() + " - " + Outputs.TRACKING_SENSOR_3.getState() + " - " + Outputs.TRACKING_SENSOR_4.getState() + " - " + Outputs.TRACKING_SENSOR_5.getState());
+            _();
             update();
             try {
                 Thread.sleep(5000);
@@ -44,16 +44,18 @@ public class StatusManager extends Component {
             }
         }
     }
-
+    private void _(){
+        if(!taakVoltooid && !geenDashboardConnectie && !afslagOnbekend && !routeKwijt && !geenStationConnectie)
+            setStatus(Status.StatusType.WERKT_NAAR_BEHOREN, false);
+        else
+            setStatus(Status.StatusType.WERKT_NAAR_BEHOREN, true);
+    }
     private void update() {
         //lampjes en shit
-
-
-
         //database
         Database db = new Database();
         db.connect();
-        db.query(String.format("INSERT INTO `status`(`werktNaarBehoren`, `taakVoltooid`, `geenDashboardConnectie`, 'geenStationConnectie','routeKwijt','afslagOnbekend') VALUES (\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")", werktNaarBehoren,taakVoltooid,geenDashboardConnectie, geenStationConnectie, routeKwijt, afslagOnbekend ));
+        db.query(String.format("INSERT INTO `status`(`werktNaarBehoren`, `taakVoltooid`, `geenDashboardConnectie`, `geenStationConnectie`,`routeKwijt`,`afslagOnbekend`) VALUES (\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\")", werktNaarBehoren,taakVoltooid,geenDashboardConnectie, geenStationConnectie, routeKwijt, afslagOnbekend ));
         db.disconnect();
 
     }
