@@ -6,10 +6,14 @@ import agv.Motor.Motor;
 import agv.pins.Outputs;
 import agv.Motor.Ultrasoon;
 import agv.status.OrderManager;
+import agv.status.Status;
+import agv.status.StatusManager;
 import agv.stoplicht.Stoplicht;
 import agv.test.Servo;
+import javafx.scene.paint.Stop;
 
 
+import javax.sound.midi.Track;
 import java.lang.reflect.Constructor;
 
 public class Main {
@@ -18,28 +22,35 @@ public class Main {
         //new Camera().takeSnapAndScanForQRCodes();
         //Camera.main(new String[]{});
         System.out.println(Outputs.TRACKING_SENSOR_3);
-        Class<? extends Component>[] COMPONENTS = new Class[]{
-                Motor.class,
-                TrackingSensor.class,
-                Ultrasoon.class,
-                Stoplicht.class,
-                Kleursensor.class,
-                Servo.class,
-                OrderManager.class,
-                Camera.class
-        };
+        new Kleursensor().Geefkleur();
 
-        for (Class<? extends Component> component : COMPONENTS) {
-            Class<? extends Component> clazz = component;
-            Constructor<? extends Component> constructor = clazz.getConstructor();
-            Component componentInstance = constructor.newInstance();
-            //if (!(componentInstance instanceof Motor)) {
-                componentInstance.setEnabled(true);
-                componentInstance.setDebugOutput(false);
-          //  }
-            if (componentInstance instanceof Kleursensor)
-                componentInstance.setDebugOutput(true);
-        }
+        //kleursensor.setEnabled(true);
+        //kleursensor.setDebugOutput(true);
+
+
+      //Class<? extends Component>[] COMPONENTS = new Class[]{
+      //        Motor.class,
+      //        TrackingSensor.class,
+      //        Ultrasoon.class,
+      //        Stoplicht.class,
+      //        Kleursensor.class,
+      //        Servo.class,
+      //        OrderManager.class,
+      //        Camera.class
+      //};
+
+      //for (Class<? extends Component> component : COMPONENTS) {
+      //    Class<? extends Component> clazz = component;
+      //    Constructor<? extends Component> constructor = clazz.getConstructor();
+      //    Component componentInstance = constructor.newInstance();
+      //   // if (!(componentInstance instanceof Kleursensor)) {
+      //        componentInstance.setEnabled(true);
+      //        componentInstance.setDebugOutput(false);
+      //   // }
+      //    if (componentInstance instanceof Stoplicht)
+      //        componentInstance.setDebugOutput(true);
+      //}
+    StatusManager.setStatus(Status.StatusType.GEEN_DASHBOARD_CONNECTIE, true);
 
 
     }

@@ -2,8 +2,12 @@
   <library name="jssc-2.9.2">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/../../gebruiker/Desktop/jssc-2.9.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Desktop/arduino.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Desktop/jSerialComm-1.3.11.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../../gebruiker/Desktop/arduino.jar!/" />
+    </SOURCES>
   </library>
 </component>

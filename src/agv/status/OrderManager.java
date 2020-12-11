@@ -39,7 +39,7 @@ public class OrderManager extends Component {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
+        StatusManager.setStatus(Status.StatusType.GEEN_DASHBOARD_CONNECTIE, true);
         }
     }
 

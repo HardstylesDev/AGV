@@ -2,6 +2,8 @@ package agv.Motor;
 
 import agv.Component;
 import agv.pins.Outputs;
+import agv.status.Status;
+import agv.status.StatusManager;
 import agv.utils.Multithread;
 import com.pi4j.wiringpi.SoftPwm;
 
@@ -10,8 +12,8 @@ public class Motor extends Component {
         super("Motoren");
     }
 
-    int speed = 45;
-    int turnspeed = 60;
+    int speed = 25;
+    int turnspeed = 35;
 
     @Override
     public void onDisable() {
@@ -29,9 +31,9 @@ public class Motor extends Component {
         if (!this.isEnabled())
             return;
         SoftPwm.softPwmCreate(Outputs.MOTOR_ACHTERUIT_LINKS.getPin().getAddress(), 0, 100);
-        SoftPwm.softPwmCreate(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), 0,100);
-        SoftPwm.softPwmCreate(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), 0,100);
-        SoftPwm.softPwmCreate(Outputs.MOTOR_ACHTERUIT_RECHTS.getPin().getAddress(), 0,100);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), 0, 100);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), 0, 100);
+        SoftPwm.softPwmCreate(Outputs.MOTOR_ACHTERUIT_RECHTS.getPin().getAddress(), 0, 100);
 
         Outputs.MOTOR_VOORUIT_RECHTS.high();
         Outputs.MOTOR_VOORUIT_LINKS.high();
@@ -55,7 +57,13 @@ public class Motor extends Component {
     private void returnToSafety() {
 
     }
-
+    public void tikjes(){
+        forwards();
+        try{
+            Thread.sleep(50);
+        }catch (InterruptedException ignored){}
+        disableMotors();
+    }
     public void disableMotors() {
         debug("disableMotors() called");
 
@@ -100,7 +108,8 @@ public class Motor extends Component {
     }
 
     public void steer(int richting) {
-        if(Ultrasoon.getDistance() >= 0 && Ultrasoon.getDistance() <= 100){
+        StatusManager.setStatus(Status.StatusType.ROUTE_KWIJT, false);
+        if (Ultrasoon.getDistance() >= 0 && Ultrasoon.getDistance() <= 100) {
             debug("Disable motors, object detectie.");
             disableMotors();
             return;
@@ -117,15 +126,26 @@ public class Motor extends Component {
             debug("right");
         } else if (richting <= 2) {
             steerLeft();
-            debug("left");
+            System.out.println("left");
         }
     }
-
+    boolean slaatAf;
+    public boolean isAanHetAfslaan(){
+        return slaatAf;
+    }
+    public void afslaan(){
+        try {
+            slaatAf = true;
+            this.disableMotors();
+            this.steerRight();
+            Thread.sleep(1000);
+            this.disableMotors();
+            this.slaatAf = false;
+        }catch (InterruptedException ignored){}
+    }
     private void steerRight() {
-        //  if(!this.isEnabled())
-        //      return;
         this.disableMotors();
-
+        debug("steerRight()");
 
         SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_LINKS.getPin().getAddress(), turnspeed);
         SoftPwm.softPwmWrite(Outputs.MOTOR_ACHTERUIT_RECHTS.getPin().getAddress(), turnspeed);
@@ -135,8 +155,8 @@ public class Motor extends Component {
     }
 
     private void steerLeft() {
-          if(!this.isEnabled())
-              return;
+        debug("steerLeft() p1");
+        System.out.println("steerLeft");
         this.disableMotors();
 
         SoftPwm.softPwmWrite(Outputs.MOTOR_VOORUIT_RECHTS.getPin().getAddress(), turnspeed);

@@ -16,8 +16,8 @@ public class Ultrasoon extends Component {
     }
 
     public void start() {
-        if (!this.isEnabled())
-            return;
+      // if (!this.isEnabled())
+      //     return;
 
         PiJavaUltrasonic sonic = new PiJavaUltrasonic(
                 8,//ECO PIN (physical 33)
