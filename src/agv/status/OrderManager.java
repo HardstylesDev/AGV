@@ -9,6 +9,10 @@ import com.sun.org.apache.xpath.internal.operations.Or;
 import java.sql.ResultSet;
 
 public class OrderManager extends Component {
+
+    /**
+     * De ordermanager houd alle orders in de gaten en checkt periodiek of er nieuwe orders zijn.
+     */
     public OrderManager() {
         super("OrderManager");
     }
@@ -30,7 +34,7 @@ public class OrderManager extends Component {
                     continue;
                 }
                 clearOrderDatabase();
-                debug("Order found: " + order);
+                System.out.println("Order found: " + order);
                 Orders orders = new Orders();
                 if(orders.isEmpty())
                     orders.setOrder(order.split(","));

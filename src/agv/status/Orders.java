@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Orders {
+    /**
+     * Hier worden alle orders opgeslagen
+     * Met de methodes hieronder kun je de orders toevoegen, verwijderen en checken
+     */
     private ArrayList<String> orders = new ArrayList<>();
 
     public boolean hasOrder() {

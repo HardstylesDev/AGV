@@ -15,7 +15,9 @@ public class Database {
 
     private Connection con;
 
-
+    /**
+     * Connect met de database
+     */
     public void connect() {
         try {
             StatusManager.setStatus(Status.StatusType.GEEN_DASHBOARD_CONNECTIE, false);

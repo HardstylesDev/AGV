@@ -12,12 +12,15 @@ public class TrackingSensor extends Component {
         super("Lijn Detectie");
     }
 
+    private final Counter counterBackwards = new Counter();
+    private final Counter counterForwards = new Counter();
+    private final Motor motor = new Motor();
     private long lastDetection = -1;
     private int lastDirection = -1;
 
     public void onEnable() {
         Multithread.execute(this::start);
-    }
+    } // run start op nieuwe thread
 
     private void start() {
         while (this.isEnabled()) {
@@ -26,76 +29,48 @@ public class TrackingSensor extends Component {
             try {
                 Thread.sleep(25);
             } catch (InterruptedException ignored) {
+                //
             }
-
         }
-
     }
 
-    boolean left = false;
-    boolean right = false;
-    boolean center = false;
 
-    public void update() {
-        // if (true) {
-        //     System.out.println("disable");
-        //     new Motor().steer(2);
-        //     return;
-        // }
-        // System.out.println(Ultrasoon.getDistance());
-        if (Ultrasoon.getDistance() > 0 && Ultrasoon.getDistance() < 100) {
-            debug("Object gedetecteerd, obstakel gevonden.");
-            new Motor().disableMotors();
-            return;
-        }
-        if (Outputs.TRACKING_SENSOR_2.isLow() && Outputs.TRACKING_SENSOR_1.isLow()) {
-            if (new Motor().isAanHetAfslaan())
-                return;
+    public void update() { // word 40x per seconde aangeroepen
+        System.out.println(counterForwards.getTicks());
 
-            new Motor().afslaan();
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ignored) {
-            }
-            new Motor().steer(lastDirection);
-            return;
-        }
+        if (Outputs.TRACKING_SENSOR_1.isLow() && Outputs.TRACKING_SENSOR_2.isLow())
+            counterForwards.add();
+        if (Outputs.TRACKING_SENSOR_4.isLow() && Outputs.TRACKING_SENSOR_5.isLow())
+            counterBackwards.add();
         if (Outputs.TRACKING_SENSOR_1.isLow() && Outputs.TRACKING_SENSOR_2.isLow() && Outputs.TRACKING_SENSOR_3.isLow() && Outputs.TRACKING_SENSOR_4.isLow() && Outputs.TRACKING_SENSOR_5.isLow()) {
             lastDetection = System.currentTimeMillis();
-            new Motor().steer(3);
+            motor.steer(3);
         } else if (Outputs.TRACKING_SENSOR_1.isLow()) {
             lastDetection = System.currentTimeMillis();
             lastDirection = 5;
-            new Motor().steer(5);
+            motor.steer(5);
         } else if (Outputs.TRACKING_SENSOR_2.isLow()) {
             lastDetection = System.currentTimeMillis();
             lastDirection = 4;
-            new Motor().steer(4);
+            motor.steer(4);
         } else if (Outputs.TRACKING_SENSOR_3.isLow()) {
             lastDetection = System.currentTimeMillis();
             lastDirection = 3;
-            new Motor().steer(3);
+            motor.steer(3);
         } else if (Outputs.TRACKING_SENSOR_4.isLow()) {
             lastDirection = 2;
             lastDetection = System.currentTimeMillis();
-            new Motor().steer(2);
+            motor.steer(2);
         } else if (Outputs.TRACKING_SENSOR_5.isLow()) {
             lastDetection = System.currentTimeMillis();
             lastDirection = 1;
-            new Motor().steer(1);
+            motor.steer(1);
         } else if (Outputs.TRACKING_SENSOR_1.isHigh() && Outputs.TRACKING_SENSOR_2.isHigh() && Outputs.TRACKING_SENSOR_3.isHigh() && Outputs.TRACKING_SENSOR_4.isHigh() && Outputs.TRACKING_SENSOR_5.isHigh())
             if (System.currentTimeMillis() - lastDetection > 1300) {
-                new Motor().disableMotors();
-                StatusManager.setStatus(Status.StatusType.ROUTE_KWIJT, true);
+                motor.disableMotors();
             } else {
-                new Motor().steer(lastDirection);
-                StatusManager.setStatus(Status.StatusType.ROUTE_KWIJT, false);
+                motor.steer(lastDirection);
             }
     }
-
-    private void send(boolean left, boolean center, boolean right) {
-
-    }
-
-
 }
+

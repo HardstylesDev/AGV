@@ -21,36 +21,34 @@ public class Main {
     public static void main(String[] args) throws Exception {
         //new Camera().takeSnapAndScanForQRCodes();
         //Camera.main(new String[]{});
+        // new Camera().snap();
         System.out.println(Outputs.TRACKING_SENSOR_3);
-        new Kleursensor().Geefkleur();
-
-        //kleursensor.setEnabled(true);
-        //kleursensor.setDebugOutput(true);
+        // new Kleursensor().Geefkleur();
 
 
-      //Class<? extends Component>[] COMPONENTS = new Class[]{
-      //        Motor.class,
-      //        TrackingSensor.class,
-      //        Ultrasoon.class,
-      //        Stoplicht.class,
-      //        Kleursensor.class,
-      //        Servo.class,
-      //        OrderManager.class,
-      //        Camera.class
-      //};
+        Class<? extends Component>[] COMPONENTS = new Class[]{
+                Motor.class,
+                TrackingSensor.class
+                //  Ultrasoon.class,
+                //  Stoplicht.class,
+                //  Kleursensor.class,
+                //  StatusManager.class,
+                //  Servo.class,
+                //  OrderManager.class,
+                //  Camera.class
+        };
 
-      //for (Class<? extends Component> component : COMPONENTS) {
-      //    Class<? extends Component> clazz = component;
-      //    Constructor<? extends Component> constructor = clazz.getConstructor();
-      //    Component componentInstance = constructor.newInstance();
-      //   // if (!(componentInstance instanceof Kleursensor)) {
-      //        componentInstance.setEnabled(true);
-      //        componentInstance.setDebugOutput(false);
-      //   // }
-      //    if (componentInstance instanceof Stoplicht)
-      //        componentInstance.setDebugOutput(true);
-      //}
-    StatusManager.setStatus(Status.StatusType.GEEN_DASHBOARD_CONNECTIE, true);
+        for (Class<? extends Component> component : COMPONENTS) {
+            Class<? extends Component> clazz = component;
+            Constructor<? extends Component> constructor = clazz.getConstructor();
+            Component componentInstance = constructor.newInstance();
+            System.out.println(component.getName());
+            componentInstance.setEnabled(true);
+            componentInstance.setDebugOutput(true);
+
+            //if (componentInstance instanceof Motor)
+            //    componentInstance.setDebugOutput(true);
+        }
 
 
     }

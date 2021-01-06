@@ -49,28 +49,31 @@ public class PiJavaUltrasonic {
         //echo pin high time is propotional to the distance _|----|
         //distance calculation
         while (pin_echo.isLow()) { //wait until echo get high
+          //  System.out.println("pinEchoIsLow");
             busyWaitNanos(1); //wait 1ns
             rejection_start++;
-            //if (rejection_start == REJECTION_START) return -1; //infinity
+           // if (rejection_start == REJECTION_START) return -1; //infinity
         }
         start_time = System.nanoTime();
 
         while (pin_echo.isHigh()) { //wait until echo get low
+
             busyWaitNanos(1); //wait 1ns
             rejection_time++;
-            //if (rejection_time == REJECTION_TIME) return -1; //infinity
+          //x********************************************.  if (rejection_time > 100) return -1; //infinity
         }
         end_time = System.nanoTime();
 
         distance = (int) ((end_time - start_time) / 5882.35294118); //distance in mm
         //distance=(end_time-start_time)/(200*29.1); //distance in mm
+
         return distance;
     }
 
     public static void busyWaitMicros(long micros) {
         long waitUntil = System.nanoTime() + (micros * 1_000);
         while (waitUntil > System.nanoTime()) {
-            // crashed als je alles hebt
+          //  System.out.println("crash here");
             ;
         }
     }
@@ -78,6 +81,7 @@ public class PiJavaUltrasonic {
     public static void busyWaitNanos(long nanos) {
         long waitUntil = System.nanoTime() + nanos;
         while (waitUntil > System.nanoTime()) {
+
             ;
         }
     }

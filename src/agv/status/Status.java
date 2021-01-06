@@ -2,6 +2,11 @@ package agv.status;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class Status {
+    /**
+     * Hier maken we alle enums aan voor de status.
+     * We geven alle enums ook meteen de juiste kleur (0,1)
+     * en geven we ze een boolean als ze moeten knipperen
+     */
     public enum StatusType {
         WERKT_NAAR_BEHOREN("Werkt naar behoren", 0, 1, 0, false),
         TAAK_VOLTOOID("Taak is voltooid", 0, 1, 0, true),
@@ -25,6 +30,11 @@ public class Status {
             this.blink = blink;
         }
 
+
+        /**
+         * @return geeft de waarde van het opgegeven element.
+         * e.x getName() geeft de naam van de status.
+         */
         public String getName() {
             return this.name;
         }
@@ -42,6 +52,7 @@ public class Status {
         }
 
         public boolean getBlink() {
+
             return this.blink;
         }
     }

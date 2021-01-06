@@ -6,6 +6,9 @@ import com.pi4j.io.gpio.RaspiPin;
 
 public class Pins {
 
+    /**
+     * Maak alle pins aan, op deze manier heb je een goed overzicht over alle pins.
+     */
     public static Pin VOORUIT_RECHTS = RaspiPin.GPIO_02;
     public static Pin VOORUIT_LINKS = RaspiPin.GPIO_01;
 
